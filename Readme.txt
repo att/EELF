@@ -1,6 +1,6 @@
 
 INTRODUCTION
---------------
+----------------
 EELF stands for Event and Error Logging Framework. It helps to implement an effective logging strategy and can 
 log messages using string or using a message key from resource bundle(s) and also supports I18N (internalization).
 EELF provides a maven plugin to Generate wiki page. EELF provides a wrapper to SLF4j, which internally uses 
@@ -8,12 +8,12 @@ logback framework.
 
 
 REQUIREMENTS
----------------
+-----------------
 Java 7 and above
 
 
 CONFIGURATION
-----------------
+------------------
 This project contains the main library.. Any application using EELF has to include eelf-core as the dependency in pom.xml.
 < dependency > 
 < groupId > </ groupId > 
@@ -21,7 +21,8 @@ This project contains the main library.. Any application using EELF has to inclu
 < version >${eelf.version}</ version > 
 </ dependency >
 
-This project contains the maven plugin to generate wiki page. The wiki page will contain the list of error codes along with its description and resolution. .
+This project contains the maven plugin to generate wiki page. The wiki page will contain the list of error codes along with 
+its description and resolution. .
 < plugin > 
     < groupId >  </ groupId > 
     < artifactId >eelf-maven-plugin</ artifactId > 
@@ -30,22 +31,22 @@ This project contains the maven plugin to generate wiki page. The wiki page will
      < execution > 
      < phase >install</ phase > 
      < goals > 
-            < goal >WikiMsgGenerator</ goal > 
-         </ goals > 
+     < goal >WikiMsgGenerator</ goal > 
+     </ goals > 
     </ execution >  
   </ executions > 
   < dependencies > 
      <!-- We need to include the dependency of the project so that its include in classpath when running plugin --> 
      < dependency > 
-        < groupId ></ groupId > 
-        < artifactId > eelf-samples</ artifactId > 
-        < version >${project.version}</ version > 
+     < groupId ></ groupId > 
+     < artifactId > eelf-samples</ artifactId > 
+     < version >${project.version}</ version > 
     </ dependency > 
   </ dependencies > 
   < configuration > < outputDirectory >target/messages</ outputDirectory > 
     < outputFile >messages.html</ outputFile > 
      < wiki > 
-         < title >Messages and Codes</ title > 
+     < title >Messages and Codes</ title > 
  < page >APP Messages and Codes</ page > 
  < principal >user</ principal > 
  < credentials >password</ credentials > 
