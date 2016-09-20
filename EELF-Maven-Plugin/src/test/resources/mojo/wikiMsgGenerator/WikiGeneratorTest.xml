@@ -1,0 +1,58 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+
+	<!-- It makes absolutely no difference what we call this component because 
+		this pom is never deployed. It is used only to test the wiki message generator 
+		plugin. -->
+	<groupId>com.att.test</groupId>
+	<artifactId>WikiMsgGenerator</artifactId>
+	<version>1.0.0</version>
+	<packaging>jar</packaging>
+	<name>Test</name>
+
+	<dependencies>
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<version>4.11</version>
+			<scope>test</scope>
+		</dependency>
+	</dependencies>
+
+	<build>
+		<plugins>
+			<plugin>
+				<artifactId>eelf</artifactId>
+				<configuration>
+					<outputDirectory>target/messages</outputDirectory>
+					<outputFile>messages.html</outputFile>
+					<wiki>
+						<title>Messages and Codes</title>
+						<space>APP</space>
+						<page>Messages and Codes</page>
+						<principal>user</principal>
+						<credentials>password</credentials>
+						<url>http://wiki.web.att.com</url>
+					</wiki>
+
+					<resources>
+						<resource>
+							<messageClass>com.att.eelf.SampleApplicationMsgs</messageClass>
+							<header><![CDATA[<p>
+  <ac:macro ac:name="toc"/>
+</p>
+<p>
+  <ac:macro ac:name="anchor">
+    <ac:default-parameter>Messages</ac:default-parameter>
+  </ac:macro>
+</p>
+<h2>Messages</h2>]]></header>
+						</resource>
+
+					</resources>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
+</project>
