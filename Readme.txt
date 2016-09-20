@@ -1,7 +1,9 @@
 
 INTRODUCTION
 --------------
-EELF stands for Event and Error Logging Framework. It helps to implement an effective logging strategy and can log messages using string or using a message key from resource bundle(s) and also supports I18N (internalization).EELF provides a maven plugin to Generate wiki page. EELF provides a wrapper to SLF4j, which internally uses logback framework.
+EELF stands for Event and Error Logging Framework. It helps to implement an effective logging strategy and can log messages
+using string or using a message key from resource bundle(s) and also supports I18N (internalization).EELF provides a maven plugin 
+to Generate wiki page. EELF provides a wrapper to SLF4j, which internally uses logback framework.
 
 
 REQUIREMENTS
