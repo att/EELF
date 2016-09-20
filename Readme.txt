@@ -15,7 +15,6 @@ numerous convenience methods to perform logging operations with ease. EELF API a
 • Internationalization/Localization support
 
 
-
 REQUIREMENTS
 -----------------
 Java 7 and above
