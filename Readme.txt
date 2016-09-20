@@ -28,25 +28,25 @@ its description and resolution. .
     < artifactId >eelf-maven-plugin</ artifactId > 
     < version >${eelf.maven.plugin.version}</ version > 
     < executions > 
-     < execution > 
-     < phase >install</ phase > 
-     < goals > 
-     < goal >WikiMsgGenerator</ goal > 
-     </ goals > 
+    < execution > 
+    < phase >install</ phase > 
+    < goals > 
+    < goal >WikiMsgGenerator</ goal > 
+    </ goals > 
     </ execution >  
   </ executions > 
   < dependencies > 
-     <!-- We need to include the dependency of the project so that its include in classpath when running plugin --> 
-     < dependency > 
-     < groupId ></ groupId > 
-     < artifactId > eelf-samples</ artifactId > 
-     < version >${project.version}</ version > 
+    <!-- We need to include the dependency of the project so that its include in classpath when running plugin --> 
+    < dependency > 
+    < groupId ></ groupId > 
+    < artifactId > eelf-samples</ artifactId > 
+    < version >${project.version}</ version > 
     </ dependency > 
   </ dependencies > 
   < configuration > < outputDirectory >target/messages</ outputDirectory > 
     < outputFile >messages.html</ outputFile > 
-     < wiki > 
-     < title >Messages and Codes</ title > 
+    < wiki > 
+    < title >Messages and Codes</ title > 
  < page >APP Messages and Codes</ page > 
  < principal >user</ principal > 
  < credentials >password</ credentials > 
@@ -58,7 +58,9 @@ its description and resolution. .
  < messageClass >com.att.eelf.sample.ApplicationMsgs</ messageClass > 
  < header ><![CDATA[<p> <ac:macro ac:name="toc"/> </p>
 <p>
-<ac:macro ac:name="anchor"> <ac:default-parameter>Application Messages</ac:default-parameter> </ac:macro> </p> <h2>Application Messages</h2>]]></ header > 
+<ac:macro ac:name="anchor"> 
+<ac:default-parameter>Application Messages</ac:default-parameter> 
+</ac:macro> </p> <h2>Application Messages</h2>]]></ header > 
  </ resource > 
  </ resources > 
  </ configuration > 
