@@ -15,4 +15,16 @@ node {
     //sh for unix bat for windows
     bat "${mvnHome}/bin/mvn -f EELF/pom.xml clean package"
     
+    // Mark the code build 'stage'....
+    stage 'Build EELF-Maven-Plugin'
+    // Run the maven build
+    //sh for unix bat for windows
+    bat "${mvnHome}/bin/mvn -f EELF-Maven-Plugin/pom.xml clean package"
+    
+    // Mark the code build 'stage'....
+    stage 'Build EELF-Samples'
+    // Run the maven build
+    //sh for unix bat for windows
+    bat "${mvnHome}/bin/mvn -f EELF-Samples/pom.xml clean package"
+    
 }
