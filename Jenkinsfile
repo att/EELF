@@ -13,7 +13,7 @@ node {
     stage 'Build EELF'
     // Run the maven build
     //sh for unix bat for windows
-    bat "${mvnHome}/bin/mvn -f EELF/pom.xml clean package"
+    bat "${mvnHome}/bin/mvn -f EELF/pom.xml clean install"
     
     // Mark the code build 'stage'....
     stage 'Build EELF-Maven-Plugin'
