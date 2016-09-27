@@ -5,10 +5,9 @@ node {
     def mvnHome = tool 'M3'
     
     // ** Provide environment variable MAVEN_GOALS with 
-    // **   goals to be run (i.e. clean deploy)
+    // **   additional goals to be run (i.e. deploy)
     
-    // ** Provide environment variable COMPONENT to build
-    // **   (i.e. EELF, EELF-Maven-Plugin or EELF-Samples)
+
     
     // Mark the code checkout 'stage'....
     stage 'Checkout'
@@ -16,9 +15,9 @@ node {
     checkout scm    
    
     // Mark the code build 'stage'....
-    stage 'Build'
+    stage 'Build EELF'
     // Run the maven build
     //sh for unix bat for windows
-    bat "${mvnHome}/bin/mvn -f ${COMPONENT}/pom.xml ${MAVEN_GOALS}"
+    bat "${mvnHome}/bin/mvn -f EELF/pom.xml clean test ${MAVEN_GOALS}"
     
 }
