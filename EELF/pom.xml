@@ -205,4 +205,9 @@
       </plugin>
   </plugins>
   </build>
+  	<scm>
+		<connection>scm:git:https://github.com/att/EELF.git</connection>
+		<developerConnection>${project.scm.connection}</developerConnection>
+	  <!-- <tag>HEAD</tag>-->
+  </scm>
 </project>
