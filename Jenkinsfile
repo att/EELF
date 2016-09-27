@@ -16,7 +16,7 @@ node {
     checkout scm    
    
     // Mark the code build 'stage'....
-    stage 'Build EELF'
+    stage 'Build'
     // Run the maven build
     //sh for unix bat for windows
     bat "${mvnHome}/bin/mvn -f ${COMPONENT}/pom.xml ${MAVEN_GOALS}"
