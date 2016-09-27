@@ -4,10 +4,6 @@ node {
     // **       in the Jenkins global configuration.
     def mvnHome = tool 'M3'
     
-    // ** Provide environment variable MAVEN_GOALS with 
-    // **   additional goals to be run (i.e. deploy)
-    
-
     
     // Mark the code checkout 'stage'....
     stage 'Checkout'
@@ -18,6 +14,6 @@ node {
     stage 'Build EELF'
     // Run the maven build
     //sh for unix bat for windows
-    bat "${mvnHome}/bin/mvn -f EELF/pom.xml clean test ${MAVEN_GOALS}"
+    bat "${mvnHome}/bin/mvn -f EELF/pom.xml clean deploy"
     
 }
