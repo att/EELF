@@ -14,6 +14,6 @@ node {
     stage 'Build EELF'
     // Run the maven build
     //sh for unix bat for windows
-    sh "${mvnHome}/bin/mvn -f EELF/pom.xml clean package"
+    sh "${mvnHome}/bin/mvn -f EELF/pom.xml clean deploy"
     
 }
