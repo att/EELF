@@ -3,6 +3,7 @@ node {
     // ** NOTE: This 'M3' maven tool must be configured
     // **       in the Jenkins global configuration.
     def mvnHome = tool 'M3'
+    sh "echo ${mvnHome}"
     
     
     // Mark the code checkout 'stage'....
@@ -14,6 +15,7 @@ node {
     stage 'Build EELF'
     // Run the maven build
     //sh for unix bat for windows
+   
     sh "${mvnHome}/bin/mvn -f EELF/pom.xml clean deploy"
     
 }
