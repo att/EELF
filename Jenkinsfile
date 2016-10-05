@@ -16,6 +16,6 @@ node {
     // Run the maven build
     //sh for unix bat for windows
    
-    sh "${mvnHome}/bin/mvn -f EELF-Maven-Plugin/pom.xml clean deploy"
+    sh "${mvnHome}/bin/mvn -f EELF-Maven-Plugin/pom.xml clean deploy -X"
     
 }
