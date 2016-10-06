@@ -11,6 +11,22 @@
     <junit.version>4.11</junit.version>
   </properties>
   
+  	<licenses>
+	  <license>
+	    <name>BSD License</name>
+	    <url>https://github.com/att/EELF/blob/master/License.txt</url>
+	  </license>
+	</licenses>
+
+	 <developers>
+	    <developer>
+	      <name>Sowjanya</name>
+	      <email></email>
+	      <organization>ATT</organization>
+	      <organizationUrl>www.att.com</organizationUrl>
+	    </developer>
+	  </developers>
+  
   <dependencies>
     <dependency>
       <groupId>org.apache.commons</groupId>
