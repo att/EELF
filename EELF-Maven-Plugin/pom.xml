@@ -4,13 +4,15 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>com.att.eelf</groupId>
   <artifactId>eelf-maven-plugin</artifactId>
+  <name>Event and Error logging framework</name>
   <packaging>maven-plugin</packaging>
   <description>EELF Maven Plugins and Tools</description>
+  <url>https://github.com/att/EELF/wiki</url>
   <version>0.0.1</version>
   <properties>
     <junit.version>4.11</junit.version>
   </properties>
-  
+      
   	<licenses>
 	  <license>
 	    <name>BSD License</name>
