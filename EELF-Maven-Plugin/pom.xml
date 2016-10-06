@@ -4,7 +4,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>com.att.eelf</groupId>
   <artifactId>eelf-maven-plugin</artifactId>
-  <name>Event and Error logging framework</name>
+  <name>Event and Error Logging Framework</name>
   <packaging>maven-plugin</packaging>
   <description>EELF Maven Plugins and Tools</description>
   <url>https://github.com/att/EELF/wiki</url>
@@ -188,6 +188,7 @@
   <scm>
 	<connection>scm:git:https://git@github.com/att/EELF.git</connection>
 	<developerConnection>${project.scm.connection}</developerConnection>
+	<url>http://github.com/att/EELF/tree/master</url>
 	  <!-- <tag>HEAD</tag>-->
   </scm>
 </project>
