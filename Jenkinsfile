@@ -18,7 +18,6 @@ node {
    
     sh "${mvnHome}/bin/mvn -f EELF-Maven-Plugin/pom.xml clean deploy"
     sh "${mvnHome}/bin/mvn -f EELF/pom.xml clean deploy"
-    sh "${mvnHome}/bin/mvn -f EELF-Samples/pom.xml clean package"
     
     
 }
