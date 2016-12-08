@@ -3,6 +3,7 @@
 ##INTRODUCTION
 
 Event and Error Logging Framework aka EELF, builds on top of existing logging frameworks, adding the I18N support in a standard way,and also provides the ability to generate wiki documentation from the message definitions. The framework includes classes with numerous convenience methods to perform logging operations with ease. EELF API and Features
+
         • Pluggable Logging framework built on SLF4j
         • Message Logging with error codes 
         • Resource Management of resource bundles 
