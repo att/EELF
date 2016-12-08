@@ -191,6 +191,18 @@
 	    </executions>
 	  </plugin> 
 	   
+	   	<plugin>
+			<groupId>org.sonatype.plugins</groupId>
+			<artifactId>nexus-staging-maven-plugin</artifactId>
+			<version>1.6.7</version>
+			<extensions>true</extensions>
+			<configuration>
+			<serverId>ossrhdme</serverId>
+			<nexusUrl>https://oss.sonatype.org/</nexusUrl>
+			<autoReleaseAfterClose>true</autoReleaseAfterClose>
+			</configuration>
+		</plugin>
+	   
        <plugin>
          <groupId>com.att.eelf</groupId>
         <artifactId>eelf-maven-plugin</artifactId>
