@@ -1,25 +1,30 @@
+EVENT and ERROR LOGGING FRAMEWORK
 
 INTRODUCTION
-----------------
+
 Event and Error Logging Framework aka EELF, builds on top of existing logging frameworks, adding the I18N support in a standard way,and also provides the ability to generate wiki documentation from the message definitions. The framework includes classes with numerous convenience methods to perform logging operations with ease. EELF API and Features
-â€¢ Pluggable Logging framework built on SLF4j
-â€¢ Message Logging with error codes 
-â€¢ Resource Management of resource bundles 
-â€¢ Load Resource Bundles
-â€¢ Format Message Resources
-â€¢ Exception Formatting
-â€¢ Wiki Content generation from the message definitions
-â€¢ Ability to capture exception hierarchy
-â€¢ Internationalization/Localization support
+• Pluggable Logging framework built on SLF4j
+• Message Logging with error codes 
+• Resource Management of resource bundles 
+• Load Resource Bundles
+• Format Message Resources
+• Exception Formatting
+• Wiki Content generation from the message definitions
+• Ability to capture exception hierarchy
+• Internationalization/Localization support
 
 
 REQUIREMENTS
------------------
-Java 7 and above
+
+Java 7 and above, Maven
+
+BUILD & RUN
+
+Maven can be used to build 
 
 
 CONFIGURATION
-------------------
+
 This project contains the main library.. Any application using EELF has to include eelf-core as the dependency in pom.xml.
 < dependency > 
 < groupId > </ groupId > 
@@ -73,11 +78,3 @@ its description and resolution. .
  </ plugin >
 
 
-RECOMMENDED MODULES
-----------------------
-EELF MavenPlugin, EELF Core, EELF Samples
-
-
-MAINTAINERS
--------------
-AT&T EELF Development Team
