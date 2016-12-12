@@ -34,7 +34,7 @@ public class TestExceptionHierarchy {
 	 @Before
 	 public void setUpMDC() {
 		 MDC.clear();
-		 MDC.put(MDC_KEY_REQUEST_ID, "cc6965");
+		 MDC.put(MDC_KEY_REQUEST_ID, "cc69");
 		 
 		 String hostIpAddress = "";
 		 String hostName = "";
