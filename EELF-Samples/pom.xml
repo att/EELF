@@ -11,7 +11,7 @@
     
   <properties>
     <eelf.version>1.0.0</eelf.version>
-    <eelf.maven.plugin.version>0.0.3</eelf.maven.plugin.version>
+    <eelf.maven.plugin.version>1.0.0</eelf.maven.plugin.version>
   </properties>
  
   <dependencies>
