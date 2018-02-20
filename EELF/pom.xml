@@ -9,7 +9,7 @@
     <name>Event and Error logging framework</name>
     <description>The Generic logging framework</description>
     <url>https://github.com/att/EELF/wiki</url>
-    <version>1.0.0-oss</version>
+    <version>1.0.1-oss</version>
     
 	<licenses>
 	  <license>
@@ -31,7 +31,7 @@
   <properties>
     <logback.version>1.2.1</logback.version>
     <junit.version>4.10</junit.version>
-    <eelf.maven.plugin.version>1.0.0-oss</eelf.maven.plugin.version>
+    <eelf.maven.plugin.version>1.0.1-oss</eelf.maven.plugin.version>
   </properties>
  
   <dependencies>

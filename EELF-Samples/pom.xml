@@ -10,8 +10,8 @@
     <version>1.0.1-SNAPSHOT</version>
     
   <properties>
-    <eelf.version>1.0.0-oss</eelf.version>
-    <eelf.maven.plugin.version>1.0.0-oss</eelf.maven.plugin.version>
+    <eelf.version>1.0.1-oss</eelf.version>
+    <eelf.maven.plugin.version>1.0.1-oss</eelf.maven.plugin.version>
   </properties>
  
   <dependencies>

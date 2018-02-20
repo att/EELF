@@ -8,7 +8,7 @@
   <packaging>maven-plugin</packaging>
   <description>EELF Maven Plugins and Tools</description>
   <url>https://github.com/att/EELF/wiki</url>
-  <version>1.0.0-oss</version>
+  <version>1.0.1-oss</version>
   <properties>
     <junit.version>4.11</junit.version>
   </properties>
