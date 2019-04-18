@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2016 AT&T Intellectual Property. All rights reserved.
+ * Copyright (c) 2019 AT&T Intellectual Property. All rights reserved.
  */
 package com.att.eelf.maven.wiki;
 
@@ -21,7 +21,7 @@ public class TableEntry implements Comparable<TableEntry> {
     /**
      * This method is used to process the raw text and to replace any special characters in the text with the escaped
      * version of the character. This is used to prevent problems in rendering the displayed content on a web site.
-     * 
+     *
      * @param raw
      *            The raw, un-escaped text
      * @return The processed text, with all special character sequences replaced with their escaped equivalents.

@@ -1,6 +1,7 @@
 /**
- * Copyright (c) 2016 AT&T Intellectual Property. All rights reserved.
+ * Copyright (c) 2019 AT&T Intellectual Property. All rights reserved.
  */
+
 package com.att.eelf.maven.wiki;
 
 import org.apache.maven.plugins.annotations.Parameter;
@@ -15,11 +16,11 @@ import org.apache.maven.plugins.annotations.Parameter;
  * resource does not supply resolutions, the resolutions property can be set to an empty value and it will be suppressed
  * from the output.
  * </p>
- * 
+ *
  * <pre>
  *    <resource>
  *      <messageClass>some.fully.qualified.ClassName</messageClass>
- *      
+ *
  *      <codeProperty>code</codeProperty>                                               <!-- default -->
  *      <messageProperty>message</messageProperty>                                      <!-- default -->
  *      <descriptionProperty>description</descriptionProperty>                          <!-- default -->
@@ -34,11 +35,10 @@ import org.apache.maven.plugins.annotations.Parameter;
  *      <resolutionWidth>30%</resolutionWidth>                                          <!-- default -->
  *      <severityHeading>Severity</severityHeading>                                     <!-- default -->
  *      <severityWidth>10%</severityWidth>                                              <!-- default -->
- *      <header></header>                                                               <!-- default -->        
+ *      <header></header>                                                               <!-- default -->
  *      <footer></footer>                                                               <!-- default -->
  *    </resource>
  * </pre>
- * 
  */
 public class Resource {
 
@@ -438,7 +438,8 @@ public class Resource {
     /**
      * @see java.lang.Object#toString()
      */
-    public String toString() {
+    @Override
+	public String toString() {
         return String.format("Resource %s", messageClass);
     }
 

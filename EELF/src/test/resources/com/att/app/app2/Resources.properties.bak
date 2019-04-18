@@ -1,0 +1,3 @@
+#Resource key=Error Code|Message text|Resolution text |Description text
+MESSAGE_CONFIGURATION_CLEARED=APP20002I|Prior configuration has been cleared|No resolution needed|An already existing configuration has been cleared and replaced with an updated \
+    configuration.

@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2016 AT&T Intellectual Property. All rights reserved.
+ * Copyright (c) 2019 AT&T Intellectual Property. All rights reserved.
  */
 package com.att.eelf.maven;
 
@@ -17,12 +17,12 @@ import com.att.eelf.maven.wiki.Resource;
 public class Helper {
 
     private static Class<?> eelfResourceManagerClass = null;
-    private static Class<?> eelfResourceErrorEnum = null;
+    private static Class<?> eelfResourceEnum = null;
     private static Object eelfResourceManager = null;
     static {
         try {
             eelfResourceManagerClass = Class.forName("com.att.eelf.i18n.EELFResourceManager");
-            eelfResourceErrorEnum = Class.forName("com.att.eelf.i18n.EELFResolvableErrorEnum");
+            eelfResourceEnum = Class.forName("com.att.eelf.i18n.EELFResolvableResourceEnum");
             eelfResourceManager = Class.forName("com.att.eelf.i18n.EELFResourceManager").newInstance();
         } catch (Exception e) {
         }
@@ -30,7 +30,7 @@ public class Helper {
 
     /**
      * This method is called to process the resources for generation
-     * 
+     *
      * @param resource
      * @return
      */
@@ -44,7 +44,7 @@ public class Helper {
 
     /**
      * This method is called to validate that a resource has been specified correctly.
-     * 
+     *
      * @param resource
      *            The resource to be validated
      * @return True if it is correct, false otherwise
@@ -103,7 +103,7 @@ public class Helper {
         String methodName = "get" + property.substring(0, 1).toUpperCase() + property.substring(1);
         try {
             Method method = eelfResourceManagerClass.getDeclaredMethod(methodName, new Class[] {
-                eelfResourceErrorEnum
+                eelfResourceEnum
             });
             if (method != null) {
                 method.setAccessible(true);

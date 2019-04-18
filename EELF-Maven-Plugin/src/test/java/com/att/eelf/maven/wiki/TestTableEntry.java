@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2016 AT&T Intellectual Property. All rights reserved.
+ * Copyright (c) 2019 AT&T Intellectual Property. All rights reserved.
  */
 
 package com.att.eelf.maven.wiki;
@@ -7,6 +7,7 @@ package com.att.eelf.maven.wiki;
 import static org.junit.Assert.*;
 
 import org.junit.Test;
+
 
 
 public class TestTableEntry {

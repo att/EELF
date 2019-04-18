@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2016 AT&T Intellectual Property. All rights reserved.
+ * Copyright (c) 2019 AT&T Intellectual Property. All rights reserved.
  */
 package com.att.eelf;
 
@@ -31,7 +31,7 @@ import com.att.eelf.exception.EELFException;
 
 public class TestAuditLogger {
 	
-	 private static EELFLogger auditLogger = EELFManager.getInstance().getAuditLogger();
+	 private static EELFLogger auditLogger = EELFManager.getAuditLogger();
 	 
 	 @Before
 	 public void setUpMDC() {

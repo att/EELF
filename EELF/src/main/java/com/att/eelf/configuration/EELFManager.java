@@ -1,460 +1,475 @@
 /**
- * Copyright (c) 2016 AT&T Intellectual Property. All rights reserved.
+ * Copyright (c) 2019 AT&T Intellectual Property. All rights reserved.
  */
 package com.att.eelf.configuration;
 
-import java.io.BufferedInputStream;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.ArrayList;
+import static com.att.eelf.configuration.Configuration.AUDIT_LOGGER_NAME;
+import static com.att.eelf.configuration.Configuration.DEBUG_LOGGER_NAME;
+import static com.att.eelf.configuration.Configuration.ERROR_LOGGER_NAME;
+import static com.att.eelf.configuration.Configuration.GENERAL_LOGGER_NAME;
+import static com.att.eelf.configuration.Configuration.METRICS_LOGGER_NAME;
+import static com.att.eelf.configuration.Configuration.PERF_LOGGER_NAME;
+import static com.att.eelf.configuration.Configuration.POLICY_LOGGER_NAME;
+import static com.att.eelf.configuration.Configuration.SECURITY_LOGGER_NAME;
+import static com.att.eelf.configuration.Configuration.SERVER_LOGGER_NAME;
+
+import java.util.Arrays;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 import org.slf4j.ILoggerFactory;
+import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-
+import com.att.eelf.configuration.EELFLogger.Level;
 import com.att.eelf.i18n.EELFMsgs;
 import com.att.eelf.i18n.EELFResourceManager;
 
 import ch.qos.logback.classic.LoggerContext;
-import ch.qos.logback.classic.joran.JoranConfigurator;
-import ch.qos.logback.core.joran.spi.JoranException;
-import ch.qos.logback.core.util.StatusPrinter;
-import static com.att.eelf.configuration.Configuration.*;
 
 /**
- * This is a singleton class used to obtain a named Logger instance.
- * The EELFManager object can be retrieved using EELFManager.getInstance(). It is created during class initialization and cannot subsequently be changed.
- * At startup the EELFManager loads the logging configuration file.
- * If no external logging configuration file is found, it will load the default logging configuration available at com/att/eelf/logback.xml
+ * This is a singleton class used to obtain a named Logger instance. The
+ * EELFManager object can be retrieved using EELFManager.getInstance(). It is
+ * created during class initialization and cannot subsequently be changed. At
+ * startup the EELFManager loads the logging configuration file. If no external
+ * logging configuration file is found, it will load the default logging
+ * configuration available at com/att/eelf/logback.xml
+ *
+ *
  */
 
 public final class EELFManager {
-	
+
 	/**
-     * This is a string constant for the comma character. It's intended to be used a common string delimiter.
-     */
-    private static final String COMMA = ",";
-	
+	 * The logger used to record general application log events
+	 */
+	private EELFLogger applicationLogger;
+
 	/**
-     * The logger to be used to record general application log events
-     */
-    private EELFLogger applicationLogger;
+	 * The logger used to record audit events
+	 */
+	private EELFLogger auditLogger;
 
-    /**
-     * The logger to be used to record audit events
-     */
-    private EELFLogger auditLogger;
+	/**
+	 * The logger used to record metric events
+	 */
+	private EELFLogger metricsLogger;
 
-    /**
-     * The logger to be used to record metric events
-     */
-    private EELFLogger metricsLogger;
+	/**
+	 * The logger used to record performance events
+	 */
+	private EELFLogger performanceLogger;
 
-   
-    /**
-     * The logger to be used to record performance events
-     */
-    private EELFLogger performanceLogger;
+	/**
+	 * The logger used to record policy manager application events
+	 */
+	private EELFLogger policyLogger;
 
-    /**
-     * The logger to be used to record policy manager application events
-     */
-    private EELFLogger policyLogger;
-	
-    /**
-     * The logger to be used to record security events
-     */
+	/**
+	 * The logger used to record security events
+	 */
 	private EELFLogger securityLogger;
-    
-    /**
-     * The logger to be used to record server events
-     */
-    private EELFLogger serverLogger;
-    
-    /**
-     * The logger to be used to record error only
-     */
-    private EELFLogger errorLogger;
-    
-    /**
-     * The logger to be used to record debug logs
-     */
-    private EELFLogger debugLogger;
-	
-    /**
-     * Cache of all other loggers used in application
-     */
-	private Map<String,EELFLogger> loggerCache = new ConcurrentHashMap<String,EELFLogger>();
-	
+
 	/**
-     * This lock is used to serialize access to create the loggers
-     */
-    private Object loggerLock = new Object();
-    
-    /**
-     * This lock is used to serialize access to create the loggers
-     */
-    private static final EELFManager logManager = new EELFManager();
-    
-    private EELFManager() {
-    	 ArrayList<String> delayedLogging = new ArrayList<String>();
-    	 /*
-         * Now, we are ready to initialize logging. Check to see if logging has already been initialized and that the
-         * application logger exists already. If it does, then skip the logging configuration because it was already set
-         * up in the container that is calling us. If not, then we need to set it up.
-         */
-        ILoggerFactory factory = LoggerFactory.getILoggerFactory();
-        if (factory instanceof LoggerContext) {
-        	LoggerContext loggerContext = (LoggerContext) factory;
-            if (loggerContext.exists(GENERAL_LOGGER_NAME) == null) {
-                initializeLogging(delayedLogging);
-            } else {
-            	delayedLogging.add(EELFResourceManager.getMessage(EELFMsgs.LOGGING_ALREADY_INITIALIZED));             
-            }
-        }
-        
-        /*
-         * Copy all delayed logging messages to the logger
-         */
-        for (String message : delayedLogging) {
-            // All messages are prefixed with a message code of the form EELF####S
-            // Where:
-            // EELF --- is the product code
-            // #### -- Is the message number
-            // S ----- Is the severity code (I=INFO, D=DEBUG, W=WARN, E=ERROR)
-            char severity = message.charAt(8);
-            switch (severity) {
-                case 'D':
-                	getApplicationLogger().debug(message);
-                    break;
-                case 'I':
-                	getApplicationLogger().info(message);
-                    break;
-                case 'W':
-                	getApplicationLogger().warn(message);
-                    break;
-                case 'E':
-                	getApplicationLogger().error(message);
-            }
-        }
-        
-        delayedLogging.clear();
-    	
-    }
-    
-    /**
-     * Initialize the logging environment, record all logging messages to the provided list for delayed processing.
-     *
-     * @param delayedLogging
-     *            The list to record logging messages to for delayed processing after the logging environment is
-     *            created.
-     */
-    private static void initializeLogging(final ArrayList<String> delayedLogging) {
-    	
-    	 /*
-         * See if we can find logback-test.xml first, unless a specific file has been provided
-         */
-        String filename = System.getProperty(PROPERTY_LOGGING_FILE_NAME, "logback-test.xml");
-       
-        String path = System.getProperty(PROPERTY_LOGGING_FILE_PATH,  "${user.home};etc;../etc");
-        
-        String msg = EELFResourceManager.format(EELFMsgs.SEARCHING_LOG_CONFIGURATION,path, filename);  
-        delayedLogging.add(msg);
-
-        if (scanAndLoadLoggingConfiguration(path, filename, delayedLogging)) {
-            return;
-        }
-
-        /*
-         * If the first attempt was for logback-test.xml and it failed to find it, look again for logback.xml
-         */
-        if (filename.equals("logback-test.xml")) {
-            filename = System.getProperty(PROPERTY_LOGGING_FILE_NAME, "logback.xml");
-          
-            if (scanAndLoadLoggingConfiguration(path, filename, delayedLogging)) {
-                return;
-            }
-        }
-       
-
-        /*
-         * If we reach here, then no external logging configurations were defined or found. In that case, we need to
-         * initialize the logging framework from hard-coded default values we load from resources.
-         */
-        InputStream stream = EELFManager.class.getClassLoader().getResourceAsStream("com/att/eelf/logback.xml");
-        try {
-            if (stream != null) {
-                delayedLogging.add(EELFResourceManager.getMessage(EELFMsgs.LOADING_DEFAULT_LOG_CONFIGURATION,"com/att/eelf/logback.xml"));
-                loadLoggingConfiguration(stream, delayedLogging);
-            } else {
-            	 delayedLogging.add(EELFResourceManager.format(EELFMsgs.NO_LOG_CONFIGURATION));               
-            	 }
-        } finally {
-            if (stream != null) {
-                try {
-                    stream.close();
-                } catch (IOException e) {
-                    // not much we can do since logger may not be configured yet
-                    e.printStackTrace(System.out);
-                }
-            }
-        }
-        
-    }
-    
-
-    /**
-     * Loads the logging configuration from the specified stream.
-     *
-     * @param stream
-     *            The stream that contains the logging configuration document.
-     * @param delayedLogging
-     */
-    private static void loadLoggingConfiguration(final InputStream stream, final ArrayList<String> delayedLogging) {
-        ILoggerFactory loggerFactory = LoggerFactory.getILoggerFactory();
-        if (loggerFactory instanceof LoggerContext) {
-            configureLogback((LoggerContext) loggerFactory, stream);
-        } else {
-        	 delayedLogging.add((EELFResourceManager.format(EELFMsgs.UNSUPPORTED_LOGGING_FRAMEWORK)));        	
-        }
-        
-    }
-
-
-    
-    /**
-     * @param loggerFactory
-     *            the logger factory context
-     * @param stream
-     *            The input stream to be configured
-     */
-    private static void configureLogback(final LoggerContext context, final InputStream stream) {
-        JoranConfigurator configurator = new JoranConfigurator();
-        configurator.setContext(context);
-
-        try {
-            configurator.doConfigure(stream);
-        } catch (JoranException e) {
-            // not much we can do since logger may not be configured yet
-            e.printStackTrace(System.out);
-        }
-
-       
-    }
-    
-    
-    /**
-     * This method scans a set of directories specified by the path for an occurrence of a file of the specified
-     * filename, and when found, loads that file as a logging configuration file.
-     *
-     * @param path
-     *            The path to be scanned. This can be one or more directories, separated by the platform specific path
-     *            separator character.
-     * @param filename
-     *            The file name to be located. The file name examined within each element of the path for the first
-     *            occurrence of the file that exists and which can be read and processed.
-     * @param delayedLogging
-     * @return True if a file was found and loaded, false if no files were found, or none were readable.
-     */
-    private static boolean scanAndLoadLoggingConfiguration(final String path, final String filename,
-        final ArrayList<String> delayedLogging) {
-        String[] pathElements = path.split(COMMA);
-        for (String pathElement : pathElements) {
-            File file = new File(pathElement, filename);
-            if (file.exists() && file.canRead() && !file.isDirectory()) {
-                String msg = EELFResourceManager.getMessage(EELFMsgs.LOADING_LOG_CONFIGURATION,file.getAbsolutePath());	                
-                delayedLogging.add(msg);
-
-                BufferedInputStream stream = null;
-                try {
-                    stream = new BufferedInputStream(new FileInputStream(file));
-                    delayedLogging.add(String.format("EELF000I Loading logging configuration from %s",
-                        file.getAbsolutePath()));
-                     loadLoggingConfiguration(stream, delayedLogging);
-                } catch (FileNotFoundException e) {
-                    delayedLogging.add(EELFResourceManager.format(e));
-                } finally {
-                    if (stream != null) {
-                        try {
-                            stream.close();
-                        } catch (IOException e) {
-                            // not much we can do since logger may not be configured yet
-                            e.printStackTrace(System.out);
-                        }
-                    }
-                }
-
-                return true;
-            }
-        }
-        return false;
-    }
-
-    
-    /**
-     * This method is used to obtain the EELFManager (as well as set it up if not already).
-     *
-     * @return The EELFManager object 
-     */
-    public static EELFManager getInstance() {
-    		
-    	return logManager;
-    }
-    
-    /**
-	 * Returns the logger associated with the name 
-	 * @return EELFLogger
+	 * The logger used to record server events
 	 */
-	public EELFLogger getLogger(String name) {
-		synchronized (loggerLock) {
-			if (!loggerCache.containsKey(name)) {
-				loggerCache.put(name,new SLF4jWrapper(name));
-			}	
-		}	
-		return loggerCache.get(name); 
-		 
-	 }
-	
-	    /**
-     * Returns the logger associated with the clazz
-     * 
-     * @param clazz
-     *            The class that we are obtaining the logger for
-     * @return EELFLogger The logger
-     */
-    public EELFLogger getLogger(Class<?> clazz) {
-		synchronized (loggerLock) {
-			if (!loggerCache.containsKey(clazz.getName())) {
-				loggerCache.put(clazz.getName(), new SLF4jWrapper(clazz.getName()));
-			}	
-		}	
-		return loggerCache.get(clazz.getName());
-			 
-	}
-	
+	private EELFLogger serverLogger;
+
 	/**
-	 * Returns the  application logger 
-	 * @return EELFLogger
+	 * The logger used to record error events
 	 */
-	public EELFLogger getApplicationLogger() {
-		 synchronized (loggerLock) {
-	          if (applicationLogger == null) {
-	        	   applicationLogger = new SLF4jWrapper(GENERAL_LOGGER_NAME);
-	          }
-	      }
-		return applicationLogger; 
-	}
-	
+	private EELFLogger errorLogger;
+
 	/**
-	 * Returns the  metrics logger
-	 * @return EELFLogger
+	 * The logger used to record debug events
 	 */
-	public EELFLogger getMetricsLogger() {
-		synchronized (loggerLock) {
-	          if (metricsLogger == null) {
-	        	  metricsLogger = new SLF4jWrapper(METRICS_LOGGER_NAME);
-	          }
-	      }
-		return metricsLogger; 
+	private EELFLogger debugLogger;
+
+	/**
+	 * Cache of all loggers instantiated via this EELFManager
+	 */
+	private Map<String, EELFLogger> loggerCache = new ConcurrentHashMap<String, EELFLogger>();
+
+	/**
+	 * The singleton instance returned by EELFManager.getInstance().
+	 */
+	private static EELFManager instance;
+
+	static {
+		instance = new EELFManager();
+		try {
+			instance.init();
+		} catch (Exception e) {
+			instance = null;
+			throw e;
+		}
 	}
 
-	  
-	/**
-	 * Returns the  audit logger 
-	 * @return EELFLogger
-	 */
-	public EELFLogger getAuditLogger() {
-		synchronized (loggerLock) {
-	          if (auditLogger == null) {
-	        	  auditLogger = new SLF4jWrapper(AUDIT_LOGGER_NAME);
-	          }
-	      }
-		return auditLogger; 
-	 }
+	private EELFManager() {
+	}
+
+	private void init() {
+		List<String> messages;
+
+		/*
+		 * Now, we are ready to initialize logging. Check to see if logging has
+		 * already been initialized and that the application logger exists
+		 * already. If it does, then skip the logging configuration because it
+		 * was already set up in the container that is calling us. If not, then
+		 * we need to set it up.
+		 */
+		ILoggerFactory factory = LoggerFactory.getILoggerFactory();
+		if (factory instanceof LoggerContext) {
+			LoggerContext loggerContext = (LoggerContext) factory;
+			if (loggerContext.exists(GENERAL_LOGGER_NAME) == null) {
+				LogbackConfigHelper helper = new LogbackConfigHelper();
+				helper.initialize();
+				messages = helper.getMessages();
+			} else {
+				messages = Arrays.asList(
+						EELFResourceManager.getMessage(EELFMsgs.LOGGING_ALREADY_INITIALIZED));
+			}
+		} else {
+			messages = Arrays
+					.asList(EELFResourceManager.getMessage(EELFMsgs.UNSUPPORTED_LOGGING_FRAMEWORK));
+		}
+
+		// copy all delayed logging messages to the logger
+		Logger logger = getApplicationLogger();
+
+		for (String message : messages) {
+			// All messages are prefixed with a message code of the form
+			// EELF####S
+			// Where:
+			// EELF -- is the product code
+			// #### -- is the message number
+			// S ----- is the severity code (I=INFO, D=DEBUG, W=WARN, E=ERROR)
+			char severity = message.charAt(8);
+			switch (severity) {
+			case 'D':
+				logger.debug(message);
+				break;
+			case 'I':
+				logger.info(message);
+				break;
+			case 'W':
+				logger.warn(message);
+				break;
+			case 'E':
+				logger.error(message);
+			}
+		}
+	}
 
 	/**
-	 * Returns the  performance logger 
+	 * This method is used to obtain the EELFManager (as well as set it up if
+	 * not already). This has been deprecated since all of the public methods
+	 * are now static so no need to fetch the instance.
+	 *
+	 * @return The EELFManager object
+	 */
+	public static EELFManager getInstance() {
+		return instance;
+	}
+
+	/**
+	 * Returns the logger associated with the name
+	 *
+	 * @param name the name of the logger
 	 * @return EELFLogger
 	 */
-	public EELFLogger getPerformanceLogger() {
-		synchronized (loggerLock) {
-	          if (performanceLogger == null) {
-	        	  performanceLogger = new SLF4jWrapper(PERF_LOGGER_NAME);
-	          }
-	      }
-		return performanceLogger; 
-	}	
-	  
-	  /**
-	   * Returns the  server logger 
-	   * @return EELFLogger
-	   */
-	public EELFLogger getServerLogger() {
-		synchronized (loggerLock) {
-	          if (serverLogger == null) {
-	        	  serverLogger = new SLF4jWrapper(SERVER_LOGGER_NAME);
-	          }
-	      }
-		return serverLogger; 
-	}	
-    
-	  
-	  /**
-	   * Returns the  security logger 
-	   * @return EELFLogger
-	   */
-	public  EELFLogger getSecurityLogger() {
-		synchronized (loggerLock) {
-	          if (securityLogger == null) {
-	        	  securityLogger = new SLF4jWrapper(SECURITY_LOGGER_NAME);
-	          }
-	      }
-		return securityLogger; 
-	}	
-	  
-	/**
-	  * Returns the policy logger 
-	  * @return EELFLogger
-	  */
-	public EELFLogger getPolicyLogger() {
-		synchronized (loggerLock) {
-	          if (policyLogger == null) {
-	        	  policyLogger = new SLF4jWrapper(POLICY_LOGGER_NAME);
-	          }
-	      }
-		return policyLogger; 
+	public static EELFLogger getLogger(String name) {
+		EELFLogger logger = instance.loggerCache.get(name);
+		if (logger == null) {
+			EELFLogger newLogger = new LogbackEELFLogger(name);
+
+			// if another thread created the logger since the above cache
+			// lookup, it will be returned by putIfAbsent and we'll use that
+			// one instead; otherwise, we'll use the one just created
+
+			logger = instance.loggerCache.putIfAbsent(name, newLogger);
+			if (logger == null) {
+				logger = newLogger;
+			}
+		}
+
+		return logger;
 	}
-	  
-	
+
 	/**
-	 * Returns the  error logger 
+	 * Returns the logger associated with the clazz
+	 *
+	 * @param clazz The class that we are obtaining the logger for
+	 * @return EELFLogger The logger
+	 */
+	public static EELFLogger getLogger(Class<?> clazz) {
+		return getLogger(clazz.getName());
+	}
+
+	/**
+	 * Returns the application logger
+	 *
 	 * @return EELFLogger
 	 */
-	public EELFLogger getErrorLogger() {
-		 synchronized (loggerLock) {
-	          if (errorLogger == null) {
-	        	  errorLogger = new SLF4jWrapper(ERROR_LOGGER_NAME);
-	          }
-	      }
-		return errorLogger; 
+	public static EELFLogger getApplicationLogger() {
+		if (instance.applicationLogger == null) {
+			instance.applicationLogger = getLogger(GENERAL_LOGGER_NAME);
+		}
+
+		return instance.applicationLogger;
 	}
-		
+
 	/**
-	 * Returns the  error logger 
+	 * Returns the metrics logger
+	 *
 	 * @return EELFLogger
 	 */
-	public EELFLogger getDebugLogger() {
-		 synchronized (loggerLock) {
-	          if (debugLogger == null) {
-	        	  debugLogger = new SLF4jWrapper(DEBUG_LOGGER_NAME);
-	          }
-	      }
-		return debugLogger; 
+	public static EELFLogger getMetricsLogger() {
+		if (instance.metricsLogger == null) {
+			instance.metricsLogger = getLogger(METRICS_LOGGER_NAME);
+		}
+
+		return instance.metricsLogger;
 	}
-	
+
+	/**
+	 * Returns the audit logger
+	 *
+	 * @return EELFLogger
+	 */
+	public static EELFLogger getAuditLogger() {
+		if (instance.auditLogger == null) {
+			instance.auditLogger = getLogger(AUDIT_LOGGER_NAME);
+		}
+
+		return instance.auditLogger;
+	}
+
+	/**
+	 * Returns the performance logger
+	 *
+	 * @return EELFLogger
+	 */
+	public static EELFLogger getPerformanceLogger() {
+		if (instance.performanceLogger == null) {
+			instance.performanceLogger = getLogger(PERF_LOGGER_NAME);
+		}
+
+		return instance.performanceLogger;
+	}
+
+	/**
+	 * Returns the server logger
+	 *
+	 * @return EELFLogger
+	 */
+	public static EELFLogger getServerLogger() {
+		if (instance.serverLogger == null) {
+			instance.serverLogger = getLogger(SERVER_LOGGER_NAME);
+		}
+
+		return instance.serverLogger;
+	}
+
+	/**
+	 * Returns the security logger
+	 *
+	 * @return EELFLogger
+	 */
+	public static EELFLogger getSecurityLogger() {
+		if (instance.securityLogger == null) {
+			instance.securityLogger = getLogger(SECURITY_LOGGER_NAME);
+		}
+
+		return instance.securityLogger;
+	}
+
+	/**
+	 * Returns the policy logger
+	 *
+	 * @return EELFLogger
+	 */
+	public static EELFLogger getPolicyLogger() {
+		if (instance.policyLogger == null) {
+			instance.policyLogger = getLogger(POLICY_LOGGER_NAME);
+		}
+
+		return instance.policyLogger;
+	}
+
+	/**
+	 * Returns the error logger
+	 *
+	 * @return EELFLogger
+	 */
+	public static EELFLogger getErrorLogger() {
+		if (instance.errorLogger == null) {
+			instance.errorLogger = getLogger(ERROR_LOGGER_NAME);
+		}
+
+		return instance.errorLogger;
+	}
+
+	/**
+	 * Returns the error logger
+	 *
+	 * @return EELFLogger
+	 */
+	public static EELFLogger getDebugLogger() {
+		if (instance.debugLogger == null) {
+			instance.debugLogger = getLogger(DEBUG_LOGGER_NAME);
+		}
+
+		return instance.debugLogger;
+	}
+
+	/**
+	 * Log a audit event using audit logger at info level.
+	 *
+	 * @param msg the message string to be logged The string message
+	 * @param arguments list of arguments for message The list of arguments
+	 */
+	public static void auditEvent(String msg, Object... arguments) {
+		getAuditLogger().info(msg, arguments);
+	}
+
+	/**
+	 * Log a audit event using audit logger at given level.
+	 *
+	 * @param level the severity level of the message, e.g., WARN One of the
+	 *            message level identifiers, e.g., WARN
+	 * @param msg the message string to be logged The string message
+	 * @param arguments list of arguments for message The list of arguments
+	 */
+	public static void auditEvent(Level level, String msg, Object... arguments) {
+		getAuditLogger().log(level, msg, null, arguments);
+	}
+
+	/**
+	 * Log a metrics event using metrics logger at info level.
+	 *
+	 * @param msg the message string to be logged
+	 * @param arguments list of arguments for message
+	 */
+	public static void metricsEvent(String msg, Object... arguments) {
+		getMetricsLogger().info(msg, arguments);
+	}
+
+	/**
+	 * Log a metrics event using metrics logger at info level at given level.
+	 *
+	 * @param level the severity level of the message, e.g., WARN One of the
+	 *            message level identifiers, e.g., WARN
+	 * @param msg the message string to be logged The string message
+	 * @param arguments list of arguments for message The list of arguments
+	 */
+	public static void metricsEvent(Level level, String msg, Object... arguments) {
+		getMetricsLogger().log(level, msg, null, arguments);
+	}
+
+	/**
+	 * Log a security event using security logger at info level.
+	 *
+	 * @param msg the message string to be logged
+	 * @param arguments list of arguments for message
+	 */
+	public static void securityEvent(String msg, Object... arguments) {
+		getSecurityLogger().info(msg, arguments);
+	}
+
+	/**
+	 * Log a security event using security logger at given level.
+	 *
+	 * @param level the severity level of the message, e.g., WARN
+	 * @param msg the message string to be logged
+	 * @param arguments list of arguments for message
+	 */
+	public static void securityEvent(Level level, String msg, Object... arguments) {
+		getSecurityLogger().log(level, msg, null, arguments);
+	}
+
+	/**
+	 * Log a performance event using performance logger at info level.
+	 *
+	 * @param msg the message string to be logged
+	 * @param arguments list of arguments for message
+	 */
+	public static void performanceEvent(String msg, Object... arguments) {
+		getPerformanceLogger().info(msg, arguments);
+	}
+
+	/**
+	 * Log a performance event using performance logger at a given level.
+	 *
+	 * @param level the severity level of the message, e.g., WARN
+	 * @param msg the message string to be logged
+	 * @param arguments list of arguments for message
+	 */
+	public static void performanceEvent(Level level, String msg, Object... arguments) {
+		getPerformanceLogger().log(level, msg, null, arguments);
+	}
+
+	/**
+	 * Log an application event using application logger at info.
+	 *
+	 * @param msg the message string to be logged
+	 * @param arguments list of arguments for message
+	 */
+	public static void applicationEvent(String msg, Object... arguments) {
+		getApplicationLogger().info(msg, arguments);
+	}
+
+	/**
+	 * Log an application event using application logger at a given level.
+	 *
+	 * @param level the severity level of the message, e.g., WARN
+	 * @param msg the message string to be logged
+	 * @param arguments list of arguments for message
+	 */
+	public static void applicationEvent(Level level, String msg, Object... arguments) {
+		getApplicationLogger().log(level, msg, null, arguments);
+	}
+
+	/**
+	 * Log a server event using server logger at info level.
+	 *
+	 * @param msg the message string to be logged
+	 * @param arguments list of arguments for message
+	 */
+	public static void serverEvent(String msg, Object... arguments) {
+		getServerLogger().info(msg, arguments);
+	}
+
+	/**
+	 * Log a server event using server logger at a given level.
+	 *
+	 * @param level the severity level of the message, e.g., WARN
+	 * @param msg the message string to be logged
+	 * @param arguments list of arguments for message
+	 */
+	public static void serverEvent(Level level, String msg, Object... arguments) {
+		getServerLogger().log(level, msg, null, arguments);
+	}
+
+	/**
+	 * Log a policy event using policy logger at info level.
+	 *
+	 * @param msg the message string to be logged
+	 * @param arguments list of arguments for message
+	 */
+	public static void policyEvent(String msg, Object... arguments) {
+		getPolicyLogger().info(msg, arguments);
+	}
+
+	/**
+	 * Log a policy event using policy logger at a given level.
+	 *
+	 * @param level the severity level of the message, e.g., WARN
+	 * @param msg the message string to be logged
+	 * @param arguments list of arguments for message
+	 */
+	public static void policyEvent(Level level, String msg, Object... arguments) {
+		getPolicyLogger().log(level, msg, null, arguments);
+	}
 }

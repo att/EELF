@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2016 AT&T Intellectual Property. All rights reserved.
+ * Copyright (c) 2019 AT&T Intellectual Property. All rights reserved.
  */
 package com.att.eelf.maven ;
 
@@ -54,15 +54,16 @@ import com.sun.jersey.client.urlconnection.URLConnectionClientHandler;
  * In addition to an output file that can be specified, the file can optionally be uploaded to the wiki site as part of
  * the plugin process.
  * </p>
- * 
+ *
+ *
  */
 
 @Mojo(name = "WikiMsgGenerator")
 @SuppressWarnings("nls")
-public class WikiMsgGenerator extends AbstractMojo  { 
+public class WikiMsgGenerator extends AbstractMojo  {
 
-	
-    /** 
+
+    /**
      * The output directory where the generated results are stored
      */
     @Parameter(property = "outputDirectory", defaultValue = "target/messages")
@@ -114,7 +115,7 @@ public class WikiMsgGenerator extends AbstractMojo  {
      * This method will first verify that at least one resource has been defined. Any number of resources may be
      * defined, and in any order. However, at least one is required.
      * </p>
-     * 
+     *
      * @see org.apache.maven.plugin.Mojo#execute()
      */
     @Override
@@ -133,8 +134,8 @@ public class WikiMsgGenerator extends AbstractMojo  {
         }
         getLog().info("Completed generating wiki documentation...");
     }
-    
-   
+
+
 
     /**
      * This method is called to process the resources for generation
@@ -151,7 +152,7 @@ public class WikiMsgGenerator extends AbstractMojo  {
 
     /**
      * This method is called to validate that a resource has been specified correctly.
-     * 
+     *
      * @param resource
      *            The resource to be validated
      * @return True if it is correct, false otherwise
@@ -241,7 +242,7 @@ public class WikiMsgGenerator extends AbstractMojo  {
             }
             File output = new File(directory, getOutputFile());
             try (BufferedOutputStream stream = new BufferedOutputStream(new FileOutputStream(output, !first))) {
-                IOUtils.write(content, stream); 
+                IOUtils.write(content, stream);
             } catch (FileNotFoundException e) {
                 String msg =
                     String.format("The output file %s exists but is a directory rather "
@@ -337,7 +338,7 @@ public class WikiMsgGenerator extends AbstractMojo  {
 
     /**
      * Creates and returns a client configured to connect to the specified Wiki api
-     * 
+     *
      * @return The client to connect to the wiki
      */
     private Client connect() {
