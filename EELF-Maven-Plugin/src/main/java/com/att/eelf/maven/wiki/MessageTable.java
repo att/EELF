@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2016 AT&T Intellectual Property. All rights reserved.
+ * Copyright (c) 2019 AT&T Intellectual Property. All rights reserved.
  */
 package com.att.eelf.maven.wiki;
 
@@ -16,7 +16,7 @@ import com.att.eelf.maven.Helper;
 /**
  * This class represents the contents of one message enumeration that is being processed by the wiki generator maven
  * plugin.
- * 
+ *
  */
 public class MessageTable {
     private static final String TABLE_HEADER_END = "</th>\n";
@@ -38,7 +38,7 @@ public class MessageTable {
 
     /**
      * Default constructor
-     * 
+     *
      * @param resource
      *            the resource definition from the plugin configuration
      */
@@ -71,7 +71,7 @@ public class MessageTable {
     /**
      * This method loads and parses the definition of the message resource (an enumeration) and constructs the table for
      * this resource.
-     * 
+     *
      * @param enumeration
      *            The enumeration class to be processed which defines the message resources for the application.
      * @throws IOException
@@ -227,7 +227,7 @@ public class MessageTable {
 
     /**
      * Creates the table header cell with an optional width specification
-     * 
+     *
      * @param contents
      * @param width
      * @return

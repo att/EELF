@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2016 AT&T Intellectual Property. All rights reserved.
+ * Copyright (c) 2019 AT&T Intellectual Property. All rights reserved.
  */
 package com.att.eelf.exception;
 
@@ -11,7 +11,7 @@ public class EELFException extends Exception {
 
     /**
      * Create the exception, detailing the reason with a message
-     * 
+     *
      * @param message
      *            The message that details the reason for the exception
      */
@@ -21,7 +21,7 @@ public class EELFException extends Exception {
 
     /**
      * Create an exception by wrapping another exception
-     * 
+     *
      * @param message
      *            The message that details the exception
      * @param cause
@@ -33,7 +33,7 @@ public class EELFException extends Exception {
 
     /**
      * Create the exception by wrapping another exception
-     * 
+     *
      * @param cause
      *            The cause of this exception
      */

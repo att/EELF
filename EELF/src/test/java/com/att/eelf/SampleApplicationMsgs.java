@@ -1,13 +1,13 @@
 /**
- * Copyright (c) 2016 AT&T Intellectual Property. All rights reserved.
+ * Copyright (c) 2019 AT&T Intellectual Property. All rights reserved.
  */
 package com.att.eelf;
 
-import com.att.eelf.i18n.EELFResolvableErrorEnum;
+import com.att.eelf.i18n.EELFResolvableResourceEnum;
 import com.att.eelf.i18n.EELFResourceManager;
 
 
-public enum SampleApplicationMsgs implements EELFResolvableErrorEnum {
+public enum SampleApplicationMsgs implements EELFResolvableResourceEnum {
 
     /**
      * Application initialization started at {0}

@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2016 AT&T Intellectual Property. All rights reserved.
+ * Copyright (c) 2019 AT&T Intellectual Property. All rights reserved.
  */
 package com.att.eelf;
 
@@ -11,8 +11,6 @@ import static com.att.eelf.configuration.Configuration.MDC_SERVER_FQDN;
 import static com.att.eelf.configuration.Configuration.MDC_SERVER_IP_ADDRESS;
 import static com.att.eelf.configuration.Configuration.MDC_SERVICE_INSTANCE_ID;
 import static com.att.eelf.configuration.Configuration.MDC_SERVICE_NAME;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
@@ -34,7 +32,7 @@ import com.att.eelf.exception.EELFException;
 
 public class TestApplicationLogger {
 	
-	 private static EELFLogger applicationLogger = EELFManager.getInstance().getApplicationLogger();
+	 private static EELFLogger applicationLogger = EELFManager.getApplicationLogger();
 	 
 	 @Test
 	 public void testInfoMessages() {
@@ -47,8 +45,7 @@ public class TestApplicationLogger {
 		 applicationLogger.info(SampleApplicationMsgs.MESSAGE_CONFIGURATION_CLEARED);
 		 
 		 applicationLogger.info(SampleApplicationMsgs.MESSAGE_CONFIGURATION_STARTED, new Date().toString());
-		
-		 applicationLogger.info("This is {} info message with args {}", new IOException());
+		 
 	 }
 	 
 	 
@@ -91,8 +88,6 @@ public class TestApplicationLogger {
 		 
 		 applicationLogger.warn(SampleApplicationMsgs.WARN_MSG);
 		 //assertTrue(checkLogFile("APP10007W", Level.WARN)); 
-		 
-		 applicationLogger.warn("This is {} warn message with args {}", new IOException());
 		
 		 
 	 }
@@ -117,8 +112,6 @@ public class TestApplicationLogger {
 		 
 		 applicationLogger.info(new Locale("es", "ES"), SampleApplicationMsgs.ERROR_SERVICE_NOT_RUNNING,"chitwan");
 		 
-		 applicationLogger.error("This is {} error message with args {}", new IOException());
-		 
 		 
 	 }
 	 
@@ -135,8 +128,6 @@ public class TestApplicationLogger {
 		 
 		 applicationLogger.debug(SampleApplicationMsgs.DEBUG_MSG);
 		 //assertFalse(checkLogFile("APP10006D",Level.DEBUG)); 
-		 
-		 applicationLogger.debug("This is {} debug message with args {}", new IOException());
 	 }
 	 
 	 @Test
@@ -151,8 +142,6 @@ public class TestApplicationLogger {
 		
 		 applicationLogger.debug(SampleApplicationMsgs.TRACE_MSG);
 		 //assertFalse(checkLogFile("APP10009T",Level.TRACE)); 
-		 
-		 applicationLogger.trace("This is {} trace message with args {}", new IOException());
 		 
 	 }
 	 
@@ -196,7 +185,6 @@ public class TestApplicationLogger {
 	 public void testApplicationEvent() {
 		 applicationLogger.applicationEvent("The is generated  event");
 		 applicationLogger.applicationEvent(Level.WARN,"The is generated  event");
-		 
 	 }
 	 
 	 
@@ -228,36 +216,5 @@ public class TestApplicationLogger {
 		 return false;
 		 
 	 }
-	 
-	 @Test
-	 public void testIsTraceEnabled() {
-		 applicationLogger.setLevel(Level.TRACE);
-		 assertTrue(applicationLogger.isTraceEnabled());
-	 }
-	 
-	 @Test
-	 public void testIsDebugEnabled() {
-		 applicationLogger.setLevel(Level.DEBUG);
-		 assertTrue(applicationLogger.isDebugEnabled());
-	 }
-	 
-	 @Test
-	 public void testIsInfoEnabled() {
-		 applicationLogger.setLevel(Level.INFO);
-		 assertTrue(applicationLogger.isInfoEnabled());
-	 }
-	 
-	 @Test
-	 public void testIsErrorEnabled() {
-		 applicationLogger.setLevel(Level.ERROR);
-		 assertTrue(applicationLogger.isErrorEnabled());
-	 }
-	 
-	 @Test
-	 public void testIsWarnEnabled() {
-		 applicationLogger.setLevel(Level.WARN);
-		 assertTrue(applicationLogger.isWarnEnabled());
-	 }
-	 
 
 }

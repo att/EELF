@@ -1,18 +1,13 @@
 /**
- * Copyright (c) 2016 AT&T Intellectual Property. All rights reserved.
+ * Copyright (c) 2019 AT&T Intellectual Property. All rights reserved.
  */
 package com.att.eelf.i18n;
 
-
 /**
- * This is a marker interface for making all the error code enums accessible for the Logger class. In order to enable an error code
- * enum, it must implement this interface. <p>In addition, every error code must have a matching resolution and description 
- * file with the error code (the enumerated value) in the resources package directory.
+ * This marker interface has been replaced with the more appropriately named
+ * <code>EELFResolvableResourceEnum</code>. It remains only for backward
+ * compatibility with existing code.
  */
-
-public interface EELFResolvableErrorEnum {
-
-	
-    
-
+@Deprecated
+public interface EELFResolvableErrorEnum extends EELFResolvableResourceEnum {
 }

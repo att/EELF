@@ -1,4 +1,4 @@
-<!-- Copyright (c) 2016 AT&T Intellectual Property. All rights reserved. -->
+<!-- Copyright (c) 2019 AT&T Intellectual Property. All rights reserved. -->
 <configuration scan="true" scanPeriod="3 seconds">
   <!--<jmxConfigurator /> -->
   <!-- directory path for all other type logs -->

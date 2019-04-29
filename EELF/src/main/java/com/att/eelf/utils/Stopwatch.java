@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2016 AT&T Intellectual Property. All rights reserved.
+ * Copyright (c) 2019 AT&T Intellectual Property. All rights reserved.
  */
 
 package com.att.eelf.utils;
@@ -20,10 +20,10 @@ import org.slf4j.MDC;
  * as a real stop watch, that is, it allows the timing to be stopped, started, cleared, and read. The accumulated time
  * is the total of all times between start and stop events. The watch can be repeatedly stopped and restarted, and will
  * accumulate all durations between start/stop pairs.
- * 
+ *
  */
 public class Stopwatch {
-	
+
 	public static String ISO_FORMAT = "yyyy-MM-dd'T'HH:mm:ss.SSSZ";
     public static final TimeZone utc = TimeZone.getTimeZone("UTC");
     public static final SimpleDateFormat isoFormatter = new SimpleDateFormat(ISO_FORMAT);
@@ -53,7 +53,7 @@ public class Stopwatch {
      * Thread local storage wrapper
      */
     private static ThreadLocal<StopwatchState> tls = new ThreadLocal<>();
-    
+
     static {
         isoFormatter.setTimeZone(utc);
     }
@@ -61,7 +61,7 @@ public class Stopwatch {
     /**
      * Looks up the Thread Local storage object containing the Stopwatch state, and creates it if it does not already
      * exist.
-     * 
+     *
      * @return The state object
      */
     private static StopwatchState getState() {
@@ -85,7 +85,7 @@ public class Stopwatch {
 
     /**
      * The accumulated duration of the watch (in nano-seconds)
-     * 
+     *
      * @return The accumulated time
      */
     public static long getDuration() {
@@ -95,7 +95,7 @@ public class Stopwatch {
 
     /**
      * Determines if the stopwatch is currently running or not
-     * 
+     *
      * @return True if the watch is running
      */
     public static boolean isRunning() {
@@ -127,13 +127,15 @@ public class Stopwatch {
             state.running = false;
             MDC.put(MDC_END_TIMESTAMP,isoFormatter.format(new Date(stopTime)));
             MDC.put(MDC_ELAPSED_TIME, String.valueOf(state.duration));
-            	
+
         }
     }
 
     /**
      * Gets the amount of time since the stop watch was last started without stopping the watch or accumulating the
-     * previous time .
+     * previous time.
+     * 
+     * @return the duration in milliseconds if still running, otherwise 0
      */
     public static double getCurrentDuration() {
         StopwatchState state = getState();

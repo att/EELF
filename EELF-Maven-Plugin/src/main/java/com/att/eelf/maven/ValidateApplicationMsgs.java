@@ -1,7 +1,6 @@
 /**
- * Copyright (c) 2016 AT&T Intellectual Property. All rights reserved.
+ * Copyright (c) 2019 AT&T Intellectual Property. All rights reserved.
  */
-
 package com.att.eelf.maven;
 
 import java.util.ArrayList;
@@ -16,31 +15,28 @@ import org.apache.maven.plugins.annotations.Parameter;
 
 import com.att.eelf.maven.wiki.Resource;
 
-
-
-
 /**
  * This class is used to test the Application Msg class to ensure that all messages are defined.
- * 
+ *
  */
 @Mojo(name = "ValidateApplicationMsgs")
 @SuppressWarnings("nls")
 public class ValidateApplicationMsgs extends AbstractMojo {
-    
+
     private static final String REGEX = "EELF(-[^0-9]+)?[0-9]{4}(I|E|W|D)";
 
     /**
      * A list of class names to be loaded and processed that represent message definitions. Each of these classes must
-     * implement the {@link com.att.eelf.i18n.EELFResolvableErrorEnum} interface, and must be enumerations of the required
+     * implement the {@link com.att.eelf.i18n.EELFResolvableResourceEnum} interface, and must be enumerations of the required
      * format.
      */
     @Parameter(property = "resources")
     private List<Resource> resources;
-    
+
     /**
      * Print all errors (if any). This method is "adaptive", in that it discovers the maximum length of each "error" and
      * formats the display of the errors into as many columns as will fit comfortably in a 120-character line.
-     * 
+     *
      * @param heading
      *            An optional report heading
      * @param errors
@@ -104,7 +100,7 @@ public class ValidateApplicationMsgs extends AbstractMojo {
 
     /**
      * Test that all message identifiers are unique
-     * 
+     *
      * @param values
      * @param enumMsg
      * @param resource
@@ -117,17 +113,17 @@ public class ValidateApplicationMsgs extends AbstractMojo {
             String identifier = Helper.getUsingAccessor(resource.getCodeProperty(),  value);
             if (defined.contains(identifier)) {
                 errors.add(identifier);
-            } 
+            }
             defined.add(identifier);
-        } 
+        }
 
         printErrors("\nMessages that have duplicated identifiers:", errors);
 
     }
-    
+
     /**
      * Verify that all messages have content
-     * 
+     *
      * @param values
      * @param enumMsg
      * @param resource
@@ -148,7 +144,7 @@ public class ValidateApplicationMsgs extends AbstractMojo {
 
     /**
      * Verifies that all messages have valid descriptions
-     * 
+     *
      * @param values
      * @param enumMsg
      * @param resource
@@ -169,12 +165,12 @@ public class ValidateApplicationMsgs extends AbstractMojo {
 
     /**
      * Verifies that all messages have valid resolutions
-     * 
+     *
      * @param values
      * @param enumMsg
      * @param resource
      */
-  
+
     public void verifyResolutionsExist(Object[] values, Class<?> enumMsg, Resource resource) {
         ArrayList<String> errors = new ArrayList<String>();
         for (Object value : values) {
@@ -188,10 +184,10 @@ public class ValidateApplicationMsgs extends AbstractMojo {
         printErrors("\nMessages that have invalid or mis-formatted resolutions:", errors);
 
     }
-    
+
     /**
- 
-  
+
+
    public void verifyResourcesExistInBundle(Object[] values, Class resource) {
        ArrayList<String> errors = new ArrayList<String>();
        for (Object msg : values()) {
@@ -200,7 +196,7 @@ public class ValidateApplicationMsgs extends AbstractMojo {
                errors.add(msg.name());
            }
        }
-      
+
        printErrors("\nResources that have defined constants but which do NOT have resources in the bundle.\n"
            + "This is an indication of a definition error.  Either the constant has been defined but\n"
            + "is not actually used, or the constant is defined and referenced in code, but the resource\n"
@@ -231,20 +227,20 @@ public class ValidateApplicationMsgs extends AbstractMojo {
     *//**
      * Verify that all messages have valid identifiers
      *//*
-  
+
     public void verifyAllMessagesHaveValidIdentifiers(Object[] values, Class resource) {
         ArrayList<String> errors = new ArrayList<String>();
         for (Object msg : values) {
                 if (!Pattern.matches(regex, EELFResourceManager.getIdentifier(msg))) {
                 errors.add(msg.name());
-            } 
+            }
         }
 
         printErrors("\nMessages that have invalid or mis-formatted error code:", errors);
 
         assertTrue(errors.isEmpty());
     }
- 
+
     *//**
      * Verifies that all messages have valid descriptions
      *//*
@@ -265,7 +261,7 @@ public class ValidateApplicationMsgs extends AbstractMojo {
     *//**
      * Verifies that all messages have valid resolutions
      *//*
-  
+
     public void verifyResolutionsExist(Object[] values, Class resource) {
         ArrayList<String> errors = new ArrayList<String>();
         for (Object msg : values) {
@@ -298,7 +294,7 @@ public class ValidateApplicationMsgs extends AbstractMojo {
 
     }
 
-   
+
     public void verifyResourcesExistInBundle(Object[] values, Class resource) {
         ArrayList<String> errors = new ArrayList<String>();
         for (Object msg : values()) {
@@ -307,7 +303,7 @@ public class ValidateApplicationMsgs extends AbstractMojo {
                 errors.add(msg.name());
             }
         }
-       
+
         printErrors("\nResources that have defined constants but which do NOT have resources in the bundle.\n"
             + "This is an indication of a definition error.  Either the constant has been defined but\n"
             + "is not actually used, or the constant is defined and referenced in code, but the resource\n"
@@ -331,13 +327,10 @@ public class ValidateApplicationMsgs extends AbstractMojo {
 	        		verifyDescriptionsExist(values, enumeration, resource);
 	        		verifyResolutionsExist(values, enumeration, resource);
 	        		getLog().info("Finished validating application messages...");
-	        	}		
-	     
+	        	}
+
 	        }
 	        getLog().info("Completed validating application message...");
-		
-	}
-	
-	
 
+	}
 }

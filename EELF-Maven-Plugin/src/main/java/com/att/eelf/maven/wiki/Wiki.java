@@ -1,14 +1,14 @@
 /**
- * Copyright (c) 2016 AT&T Intellectual Property. All rights reserved.
+ * Copyright (c) 2019 AT&T Intellectual Property. All rights reserved.
  */
 
 package com.att.eelf.maven.wiki;
 
-import org.apache.maven.plugins.annotations.Parameter; 
+import org.apache.maven.plugins.annotations.Parameter;
 
 /**
  * This class is used to capture and manage the configuration of the wiki site where the output is to be placed.
- * 
+ *
  */
 
 public class Wiki {

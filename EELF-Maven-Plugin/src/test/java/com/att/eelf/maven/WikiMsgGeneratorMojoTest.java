@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2016 AT&T Intellectual Property. All rights reserved.
+ * Copyright (c) 2019 AT&T Intellectual Property. All rights reserved.
  */
 
 package com.att.eelf.maven;
@@ -11,6 +11,8 @@ import org.junit.Ignore;
 import org.junit.Test;
 
 import com.att.eelf.maven.wiki.Resource;
+
+
 
 @Ignore
 public class WikiMsgGeneratorMojoTest  {

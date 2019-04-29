@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2016 AT&T Intellectual Property. All rights reserved.
+ * Copyright (c) 2019 AT&T Intellectual Property. All rights reserved.
  */
 package com.att.eelf;
 
@@ -29,7 +29,7 @@ import com.att.eelf.exception.MySampleException2;
 
 public class TestExceptionHierarchy {
 	
-	 private static EELFLogger applicationLogger = EELFManager.getInstance().getApplicationLogger();
+	 private static EELFLogger applicationLogger = EELFManager.getApplicationLogger();
 	 
 	 @Before
 	 public void setUpMDC() {

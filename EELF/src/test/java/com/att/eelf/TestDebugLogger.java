@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2016 AT&T Intellectual Property. All rights reserved.
+ * Copyright (c) 2019 AT&T Intellectual Property. All rights reserved.
  */
 package com.att.eelf;
 
@@ -26,7 +26,7 @@ import static com.att.eelf.configuration.Configuration.*;
 
 public class TestDebugLogger {
 	
-	 private static EELFLogger debugLogger = EELFManager.getInstance().getDebugLogger();
+	 private static EELFLogger debugLogger = EELFManager.getDebugLogger();
 	 
 	 @Before
 	 public void setUpMDC() {
