@@ -9,9 +9,8 @@
     <name>Event and Error logging framework</name>
     <description>The Generic logging framework</description>
     <url>https://github.com/att/EELF/wiki</url>
-    <version>2.0.0-oss</version>
-    
-	<licenses>
+    <version>2.0.1-oss-SNAPSHOT</version>
+    	<licenses>
 	  <license>
 	    <name>BSD License</name>
 	    <url>https://github.com/att/EELF/blob/master/License.txt</url>
