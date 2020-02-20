@@ -228,7 +228,7 @@
   	<scm>
 		<connection>scm:git:https://git@github.com/att/EELF.git</connection>
 		<developerConnection>${project.scm.connection}</developerConnection>
-		<url>http://github.com/att/EELF/tree/master</url>
+		<url>http://github.com/att/EELF/tree/test-branch</url>
 	  <!-- <tag>HEAD</tag>-->
   </scm>
 </project>
