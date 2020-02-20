@@ -9,9 +9,8 @@
     <name>Event and Error logging framework</name>
     <description>The Generic logging framework</description>
     <url>https://github.com/att/EELF/wiki</url>
-    <version>2.0.0-oss</version>
-    
-	<licenses>
+    <version>2.0.1-oss-SNAPSHOT</version>
+    	<licenses>
 	  <license>
 	    <name>BSD License</name>
 	    <url>https://github.com/att/EELF/blob/master/License.txt</url>
@@ -213,6 +212,17 @@
                     </resources>
                 </configuration>
             </plugin>
+            <plugin> 
+	    	<groupId>org.sonatype.plugins</groupId> 
+	    	   <artifactId>nexus-staging-maven-plugin</artifactId> 
+			<version>1.6.7</version> 
+				<extensions>true</extensions> 
+				<configuration> 
+					<serverId>ossrh</serverId> 
+					<nexusUrl>https://oss.sonatype.org/</nexusUrl> 
+					<autoReleaseAfterClose>true</autoReleaseAfterClose> 
+			  </configuration> 
+	   </plugin>
         </plugins>
         </build>
   	<scm>
